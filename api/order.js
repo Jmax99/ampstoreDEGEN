@@ -5,25 +5,8 @@ export default async function handler(req, res) {
 
   const body = req.body;
 
-  // SIZE → VARIANT MAP (IMPORTANT: likely root issue if wrong IDs)
-  const variants = {
-    XS: "6a11c0f7696d44",
-    S:  "6a11c0f7696de5",
-    M:  "6a11c0f7696e72",
-    L:  "6a11c0f7696ef7",
-    XL: "6a11c0f7696f73",
-    "2XL": "6a11c0f7697006"
-  };
-
-  const variant_id = variants[body.size];
-
-  // SAFETY CHECK (prevents undefined variant errors)
-  if (!variant_id) {
-    return res.status(400).json({
-      success: false,
-      error: "Invalid size selected or missing variant_id"
-    });
-  }
+  // ONLY ONE VARIANT NOW
+  const variant_id = "6a11d63347c9c2";
 
   const payload = {
     recipient: {
@@ -56,7 +39,6 @@ export default async function handler(req, res) {
 
     console.log("PRINTFUL RAW RESPONSE:", text);
 
-    // 🚨 IMPORTANT: show real error from Printful
     if (!response.ok) {
       return res.status(500).json({
         success: false,
@@ -70,8 +52,6 @@ export default async function handler(req, res) {
     });
 
   } catch (err) {
-    console.log("SERVER ERROR:", err);
-
     return res.status(500).json({
       success: false,
       error: err.message
