@@ -5,7 +5,7 @@ export default async function handler(req, res) {
 
   const body = req.body;
 
-  // ONLY ONE VARIANT NOW
+  // SINGLE VARIANT ONLY (your new Printful product)
   const variant_id = "6a11d63347c9c2";
 
   const payload = {
