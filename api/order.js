@@ -17,7 +17,7 @@ export default async function handler(req, res) {
 
   const variant_id = variants[body.size];
 
-  // Build Printful payload
+  // Printful payload
   const payload = {
     recipient: {
       name: body.name,
