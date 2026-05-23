@@ -5,8 +5,16 @@ export default async function handler(req, res) {
 
   const body = req.body;
 
-  // SINGLE VARIANT ONLY (your new Printful product)
+  // SINGLE VARIANT (your Printful product)
   const variant_id = "6a11d63347c9c2";
+
+  // Safety check
+  if (!body.name || !body.address || !body.city || !body.zip || !body.country || !body.email) {
+    return res.status(400).json({
+      success: false,
+      error: "Missing required fields"
+    });
+  }
 
   const payload = {
     recipient: {
@@ -19,7 +27,7 @@ export default async function handler(req, res) {
     },
     items: [
       {
-        variant_id: variant_id,
+        variant_id,
         quantity: 1
       }
     ]
@@ -37,21 +45,19 @@ export default async function handler(req, res) {
 
     const text = await response.text();
 
+    console.log("PRINTFUL STATUS:", response.status);
     console.log("PRINTFUL RAW RESPONSE:", text);
 
-    if (!response.ok) {
-      return res.status(500).json({
-        success: false,
-        printful_error: text
-      });
-    }
-
+    // ALWAYS return real Printful response
     return res.status(200).json({
-      success: true,
-      printful: JSON.parse(text)
+      success: response.ok,
+      status: response.status,
+      printful_response: text
     });
 
   } catch (err) {
+    console.log("SERVER ERROR:", err);
+
     return res.status(500).json({
       success: false,
       error: err.message
