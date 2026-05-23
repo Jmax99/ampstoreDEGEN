@@ -5,7 +5,7 @@ export default async function handler(req, res) {
 
   const body = req.body;
 
-  // SIZE → VARIANT MAP (your current IDs)
+  // SIZE → VARIANT MAP (your IDs)
   const variants = {
     XS: "6a11c0f7696d44",
     S:  "6a11c0f7696de5",
@@ -15,9 +15,6 @@ export default async function handler(req, res) {
     "2XL": "6a11c0f7697006"
   };
 
-  const variant_id = variants[body.size];
-
-  // Printful payload
   const payload = {
     recipient: {
       name: body.name,
@@ -29,7 +26,7 @@ export default async function handler(req, res) {
     },
     items: [
       {
-        variant_id: variant_id,
+        variant_id: variants[body.size],
         quantity: 1
       }
     ]
