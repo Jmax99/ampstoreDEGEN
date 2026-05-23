@@ -5,7 +5,7 @@ export default async function handler(req, res) {
 
   const body = req.body;
 
-  // SIZE → VARIANT MAP
+  // SIZE → VARIANT MAP (your current IDs)
   const variants = {
     XS: "6a11c0f7696d44",
     S:  "6a11c0f7696de5",
@@ -17,6 +17,24 @@ export default async function handler(req, res) {
 
   const variant_id = variants[body.size];
 
+  // Build Printful payload
+  const payload = {
+    recipient: {
+      name: body.name,
+      address1: body.address,
+      city: body.city,
+      zip: body.zip,
+      country_code: body.country,
+      email: body.email
+    },
+    items: [
+      {
+        variant_id: variant_id,
+        quantity: 1
+      }
+    ]
+  };
+
   try {
     const response = await fetch("https://api.printful.com/orders", {
       method: "POST",
@@ -24,33 +42,27 @@ export default async function handler(req, res) {
         "Authorization": `Bearer ${process.env.PRINTFUL_API_KEY}`,
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({
-        recipient: {
-          name: body.name,
-          address1: body.address,
-          city: body.city,
-          zip: body.zip,
-          country_code: body.country,
-          email: body.email
-        },
-        items: [
-          {
-            variant_id: variant_id,
-            quantity: 1
-          }
-        ]
-      })
+      body: JSON.stringify(payload)
     });
 
-    const data = await response.json();
+    const text = await response.text();
 
-    res.status(200).json({
+    console.log("PRINTFUL RAW RESPONSE:", text);
+
+    if (!response.ok) {
+      return res.status(500).json({
+        success: false,
+        error: text
+      });
+    }
+
+    return res.status(200).json({
       success: true,
-      data
+      printful: JSON.parse(text)
     });
 
   } catch (err) {
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       error: err.message
     });
