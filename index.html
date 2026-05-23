@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AMPALIENMAXXING — Drop Your Drip</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --black: #0a0a0a;
+      --white: #f2f0e8;
+      --acid:  #c6ff00;
+      --alien: #00ffaa;
+      --red:   #ff2d2d;
+      --gray:  #141414;
+      --muted: #555;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: 'Space Mono', monospace;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.1rem 2.5rem;
+      border-bottom: 1px solid #1c1c1c;
+      background: rgba(10,10,10,0.95);
+      backdrop-filter: blur(10px);
+    }
+
+    .logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.5rem;
+      letter-spacing: 0.14em;
+      color: var(--acid);
+      text-decoration: none;
+    }
+
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      font-size: 0.65rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--white);
+      text-decoration: none;
+      opacity: 0.6;
+      transition: opacity 0.2s, color 0.2s;
+    }
+    .nav-links a:hover { opacity: 1; color: var(--acid); }
+
+    /* ── MARQUEE ── */
+    .marquee-wrap {
+      margin-top: 62px;
+      overflow: hidden;
+      border-bottom: 1px solid #1c1c1c;
+      padding: 0.7rem 0;
+      background: #0f0f0f;
+    }
+    .marquee-track {
+      display: flex;
+      gap: 2.5rem;
+      animation: marquee 20s linear infinite;
+      width: max-content;
+    }
+    .marquee-track span {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 0.85rem;
+      letter-spacing: 0.18em;
+      color: var(--acid);
+      white-space: nowrap;
+      opacity: 0.7;
+    }
+    @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+    /* ── PRODUCT SECTION ── */
+    .product-section {
+      min-height: calc(100vh - 62px);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+    }
+
+    /* Left — shirt image */
+    .product-visual {
+      position: relative;
+      background: var(--gray);
+      border-right: 1px solid #1c1c1c;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4rem 3rem;
+      overflow: hidden;
+    }
+
+    .product-visual::before {
+      content: '';
+      position: absolute;
+      bottom: -120px; left: -120px;
+      width: 400px; height: 400px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(198,255,0,0.06) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .shirt-frame {
+      position: relative;
+      width: 100%;
+      max-width: 480px;
+    }
+
+    .shirt-frame img {
+      width: 100%;
+      display: block;
+      object-fit: contain;
+      filter: drop-shadow(0 30px 60px rgba(0,0,0,0.6));
+      transition: transform 0.4s ease;
+    }
+
+    .shirt-frame:hover img { transform: scale(1.03) translateY(-6px); }
+
+    .shirt-badge {
+      position: absolute;
+      top: 1.2rem; right: 1.2rem;
+      background: var(--acid);
+      color: var(--black);
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      padding: 5px 12px;
+      text-transform: uppercase;
+    }
+
+    /* Right — product info */
+    .product-info {
+      padding: 5rem 3.5rem 4rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 0;
+    }
+
+    .product-eyebrow {
+      font-size: 0.62rem;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--alien);
+      margin-bottom: 1.2rem;
+    }
+
+    .product-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(3rem, 5vw, 5rem);
+      line-height: 0.93;
+      letter-spacing: 0.04em;
+      margin-bottom: 1.6rem;
+    }
+
+    .product-name .accent { color: var(--acid); }
+
+    .product-desc {
+      font-size: 0.75rem;
+      line-height: 2;
+      color: rgba(242,240,232,0.5);
+      margin-bottom: 2rem;
+      max-width: 360px;
+    }
+
+    .product-price {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.6rem;
+      letter-spacing: 0.06em;
+      color: var(--acid);
+      margin-bottom: 2rem;
+    }
+
+    .product-price small {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+      margin-left: 0.5rem;
+    }
+
+    /* Size picker */
+    .size-label {
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(242,240,232,0.4);
+      margin-bottom: 0.7rem;
+    }
+
+    .size-row {
+      display: flex;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+      margin-bottom: 2rem;
+    }
+
+    .size-btn {
+      padding: 0.55rem 1rem;
+      background: transparent;
+      border: 1px solid #2a2a2a;
+      color: var(--white);
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .size-btn:hover  { border-color: var(--acid); color: var(--acid); }
+    .size-btn.active { background: var(--acid); color: var(--black); border-color: var(--acid); font-weight: 700; }
+
+    /* CTA */
+    .order-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.8rem;
+      padding: 1.1rem 2.4rem;
+      background: var(--acid);
+      color: var(--black);
+      border: none;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.18s, transform 0.18s;
+      width: fit-content;
+    }
+    .order-btn:hover   { background: #d4ff00; transform: translateY(-2px); }
+    .order-btn:active  { transform: translateY(0); }
+
+    .trust-row {
+      display: flex;
+      gap: 1.5rem;
+      margin-top: 1.8rem;
+      flex-wrap: wrap;
+    }
+    .trust-item {
+      font-size: 0.6rem;
+      letter-spacing: 0.12em;
+      color: rgba(242,240,232,0.3);
+      text-transform: uppercase;
+    }
+    .trust-item::before { content: '✓ '; color: var(--alien); }
+
+    /* ── ORDER MODAL ── */
+    .modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.88);
+      z-index: 200;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+    .modal-backdrop.open { display: flex; }
+
+    .modal {
+      background: #111;
+      border: 1px solid #252525;
+      width: 100%;
+      max-width: 500px;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 2.2rem;
+      position: relative;
+      animation: slideUp 0.22s ease;
+    }
+    @keyframes slideUp { from { opacity:0; transform:translateY(24px); } to { opacity:1; transform:translateY(0); } }
+
+    .modal-close {
+      position: absolute;
+      top: 1.2rem; right: 1.4rem;
+      background: none;
+      border: none;
+      color: var(--white);
+      font-size: 1.2rem;
+      cursor: pointer;
+      opacity: 0.4;
+      transition: opacity 0.2s;
+    }
+    .modal-close:hover { opacity: 1; }
+
+    .modal-header { margin-bottom: 2rem; }
+    .modal-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.8rem;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.2rem;
+    }
+    .modal-sub { font-size: 0.65rem; color: var(--muted); }
+
+    .form-group { margin-bottom: 1.1rem; }
+    .form-label {
+      display: block;
+      font-size: 0.58rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(242,240,232,0.4);
+      margin-bottom: 0.4rem;
+    }
+    .form-input {
+      width: 100%;
+      background: #0a0a0a;
+      border: 1px solid #222;
+      color: var(--white);
+      padding: 0.72rem 1rem;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.72rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .form-input:focus { border-color: var(--acid); }
+    .form-input::placeholder { color: #333; }
+
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+    .modal-size-row { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
+    .modal-size-btn {
+      padding: 0.45rem 0.85rem;
+      background: transparent;
+      border: 1px solid #2a2a2a;
+      color: var(--white);
+      font-family: 'Space Mono', monospace;
+      font-size: 0.62rem;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .modal-size-btn:hover  { border-color: var(--acid); color: var(--acid); }
+    .modal-size-btn.active { background: var(--acid); color: var(--black); border-color: var(--acid); font-weight: 700; }
+
+    .order-summary {
+      background: #0a0a0a;
+      border: 1px solid #1e1e1e;
+      padding: 1rem 1.2rem;
+      margin: 1.4rem 0;
+      font-size: 0.7rem;
+    }
+    .sum-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.32rem 0;
+      border-bottom: 1px solid #181818;
+    }
+    .sum-row:last-child { border-bottom: none; font-weight: 700; padding-top: 0.6rem; color: var(--acid); }
+    .sum-row span:first-child { color: var(--muted); }
+
+    .submit-btn {
+      width: 100%;
+      padding: 1.05rem;
+      background: var(--acid);
+      color: var(--black);
+      border: none;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.18s;
+    }
+    .submit-btn:hover    { background: #d4ff00; }
+    .submit-btn:disabled { background: #1f1f1f; color: #444; cursor: not-allowed; }
+
+    .status-msg {
+      margin-top: 1rem;
+      padding: 0.8rem 1rem;
+      font-size: 0.68rem;
+      letter-spacing: 0.05em;
+      display: none;
+      line-height: 1.6;
+    }
+    .status-msg.success { background: rgba(0,255,170,0.07); border: 1px solid rgba(0,255,170,0.25); color: var(--alien); display:block; }
+    .status-msg.error   { background: rgba(255,45,45,0.07);  border: 1px solid rgba(255,45,45,0.25);  color: var(--red);   display:block; }
+
+    .spinner {
+      display: inline-block;
+      width: 12px; height: 12px;
+      border: 2px solid rgba(0,0,0,0.25);
+      border-top-color: var(--black);
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+      vertical-align: middle;
+      margin-right: 6px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid #141414;
+      padding: 1.8rem 2.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.62rem;
+      color: #333;
+    }
+    footer .logo { font-size: 1.1rem; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 820px) {
+      .product-section { grid-template-columns: 1fr; }
+      .product-visual { border-right: none; border-bottom: 1px solid #1c1c1c; padding: 3rem 2rem; }
+      .shirt-frame { max-width: 300px; }
+      .product-info { padding: 2.5rem 1.5rem 3rem; }
+      footer { flex-direction: column; gap: 0.8rem; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a class="logo" href="#">AMPALIENMAXXING</a>
+    <ul class="nav-links">
+      <li><a href="#shop">Shop</a></li>
+      <li><a href="#order">Order</a></li>
+    </ul>
+  </nav>
+
+  <!-- MARQUEE -->
+  <div class="marquee-wrap">
+    <div class="marquee-track">
+      <span>AMPALIENMAXXING</span><span>·</span>
+      <span>PRINT ON DEMAND</span><span>·</span>
+      <span>POWERED BY PRINTFUL</span><span>·</span>
+      <span>LIMITED DROP</span><span>·</span>
+      <span>ALIEN FREQUENCY</span><span>·</span>
+      <span>AMPALIENMAXXING</span><span>·</span>
+      <span>PRINT ON DEMAND</span><span>·</span>
+      <span>POWERED BY PRINTFUL</span><span>·</span>
+      <span>LIMITED DROP</span><span>·</span>
+      <span>ALIEN FREQUENCY</span><span>·</span>
+    </div>
+  </div>
+
+  <!-- PRODUCT -->
+  <section class="product-section" id="shop">
+
+    <!-- Shirt Image -->
+    <div class="product-visual">
+      <div class="shirt-frame">
+        <span class="shirt-badge">New Drop</span>
+        <img src="shirt.png" alt="AMPALIENMAXXING Signature Tee" />
+      </div>
+    </div>
+
+    <!-- Product Info -->
+    <div class="product-info" id="order">
+      <p class="product-eyebrow">▲ SS25 · Signature Collection</p>
+      <h1 class="product-name">
+        AMP<br/>
+        <span class="accent">ALIEN</span><br/>
+        TEE
+      </h1>
+      <p class="product-desc">
+        100% premium cotton. Heavyweight 280gsm.<br/>
+        Made to order via Printful — drop-shipped straight to you.
+        No overstock. Every piece is intentional.
+      </p>
+
+      <p class="product-price">$34.99 <small>USD · Free shipping</small></p>
+
+      <p class="size-label">Select Size</p>
+      <div class="size-row" id="landing-size-picker">
+        <button class="size-btn" data-size="S">S</button>
+        <button class="size-btn" data-size="M">M</button>
+        <button class="size-btn" data-size="L">L</button>
+        <button class="size-btn" data-size="XL">XL</button>
+        <button class="size-btn" data-size="2XL">2XL</button>
+      </div>
+
+      <button class="order-btn" id="openOrderBtn">→ Order Now</button>
+
+      <div class="trust-row">
+        <span class="trust-item">Print on demand</span>
+        <span class="trust-item">Fulfilled by Printful</span>
+        <span class="trust-item">Secure checkout</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ORDER MODAL -->
+  <div class="modal-backdrop" id="orderModal">
+    <div class="modal">
+      <button class="modal-close" id="closeModal">✕</button>
+
+      <div class="modal-header">
+        <h2 class="modal-title">Complete Your Order</h2>
+        <p class="modal-sub">AMPALIENMAXXING Signature Tee · $34.99</p>
+      </div>
+
+      <p class="form-label">Size</p>
+      <div class="modal-size-row" id="modal-size-picker">
+        <button class="modal-size-btn" data-size="S">S</button>
+        <button class="modal-size-btn" data-size="M">M</button>
+        <button class="modal-size-btn" data-size="L">L</button>
+        <button class="modal-size-btn" data-size="XL">XL</button>
+        <button class="modal-size-btn" data-size="2XL">2XL</button>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">First Name</label>
+          <input class="form-input" type="text" id="firstName" placeholder="Zyx" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Last Name</label>
+          <input class="form-input" type="text" id="lastName" placeholder="Nova" />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <input class="form-input" type="email" id="email" placeholder="you@signal.com" />
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Address</label>
+        <input class="form-input" type="text" id="address1" placeholder="123 Orbit Lane" />
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Address Line 2 (optional)</label>
+        <input class="form-input" type="text" id="address2" placeholder="Apt, Suite, etc." />
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">City</label>
+          <input class="form-input" type="text" id="city" placeholder="Roswell" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">State / Region</label>
+          <input class="form-input" type="text" id="state" placeholder="NM" />
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">ZIP / Postal</label>
+          <input class="form-input" type="text" id="zip" placeholder="88201" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Country Code</label>
+          <input class="form-input" type="text" id="country" placeholder="US" maxlength="2" style="text-transform:uppercase" />
+        </div>
+      </div>
+
+      <div class="order-summary">
+        <div class="sum-row"><span>Product</span><span>AMPALIENMAXXING Signature Tee</span></div>
+        <div class="sum-row"><span>Size</span><span id="sum-size">—</span></div>
+        <div class="sum-row"><span>Shipping</span><span>Calculated at fulfillment</span></div>
+        <div class="sum-row"><span>Total</span><span>$34.99</span></div>
+      </div>
+
+      <button class="submit-btn" id="submitOrder">Place Order</button>
+      <div class="status-msg" id="statusMsg"></div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <a class="logo" href="#">AMPALIENMAXXING</a>
+    <span>© 2025 · All items made to order via Printful</span>
+  </footer>
+
+  <script src="order.js"></script>
+
+  <script>
+    // ── Landing size picker sync ──
+    let landingSize = null;
+
+    document.querySelectorAll("#landing-size-picker .size-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll("#landing-size-picker .size-btn").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        landingSize = btn.dataset.size;
+      });
+    });
+
+    // ── Modal size picker ──
+    let modalSize = null;
+
+    document.querySelectorAll("#modal-size-picker .modal-size-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll("#modal-size-picker .modal-size-btn").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        modalSize = btn.dataset.size;
+        document.getElementById("sum-size").textContent = modalSize;
+      });
+    });
+
+    // ── Open modal (carry over landing size if picked) ──
+    document.getElementById("openOrderBtn").addEventListener("click", () => {
+      const modal = document.getElementById("orderModal");
+      modal.classList.add("open");
+      document.body.style.overflow = "hidden";
+
+      // Pre-select size from landing picker
+      if (landingSize) {
+        document.querySelectorAll("#modal-size-picker .modal-size-btn").forEach(btn => {
+          btn.classList.toggle("active", btn.dataset.size === landingSize);
+          if (btn.dataset.size === landingSize) {
+            modalSize = landingSize;
+            document.getElementById("sum-size").textContent = modalSize;
+          }
+        });
+      }
+
+      clearStatus();
+    });
+
+    // ── Close modal ──
+    document.getElementById("closeModal").addEventListener("click", closeModal);
+    document.getElementById("orderModal").addEventListener("click", e => {
+      if (e.target === document.getElementById("orderModal")) closeModal();
+    });
+
+    function closeModal() {
+      document.getElementById("orderModal").classList.remove("open");
+      document.body.style.overflow = "";
+    }
+
+    // ── Submit order ──
+    document.getElementById("submitOrder").addEventListener("click", async () => {
+      clearStatus();
+
+      const firstName = field("firstName");
+      const lastName  = field("lastName");
+      const email     = field("email");
+      const address1  = field("address1");
+      const address2  = field("address2");
+      const city      = field("city");
+      const state     = field("state");
+      const zip       = field("zip");
+      const country   = field("country").toUpperCase();
+
+      if (!firstName || !lastName || !email || !address1 || !city || !zip || !country) {
+        return showStatus("Please fill in all required fields.", "error");
+      }
+      if (!email.includes("@")) {
+        return showStatus("Please enter a valid email.", "error");
+      }
+      if (!modalSize) {
+        return showStatus("Please select a size.", "error");
+      }
+
+      const btn = document.getElementById("submitOrder");
+      btn.disabled = true;
+      btn.innerHTML = '<span class="spinner"></span> Sending Order...';
+
+      try {
+        const res = await fetch("/api/order", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            recipient: {
+              name: `${firstName} ${lastName}`,
+              email, address1, address2, city,
+              state_code:   state,
+              zip,
+              country_code: country,
+            },
+            items: [{
+              // Replace with your actual Printful variant ID for the shirt
+              // Find it at: Printful Dashboard → Store → Products → your shirt → variant ID
+              variant_id:   "REPLACE_WITH_PRINTFUL_VARIANT_ID",
+              quantity:     1,
+              retail_price: "34.99",
+              name:         `AMPALIENMAXXING Signature Tee (${modalSize})`,
+            }]
+          }),
+        });
+
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || "Order failed");
+
+        showStatus(`✓ Order #${data.result?.id || "placed"} confirmed! Check your email for updates.`, "success");
+        btn.disabled = false;
+        btn.innerHTML = "Place Order";
+        setTimeout(closeModal, 4000);
+
+      } catch (err) {
+        showStatus("✗ " + err.message, "error");
+        btn.disabled = false;
+        btn.innerHTML = "Place Order";
+      }
+    });
+
+    function field(id) { return (document.getElementById(id)?.value || "").trim(); }
+
+    function showStatus(msg, type) {
+      const el = document.getElementById("statusMsg");
+      el.textContent = msg;
+      el.className = "status-msg " + type;
+    }
+
+    function clearStatus() {
+      const el = document.getElementById("statusMsg");
+      el.textContent = "";
+      el.className = "status-msg";
+    }
+  </script>
+</body>
+</html>
